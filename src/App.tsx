@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Header } from './components/Header';
-import data from './assets/data.json'
 import List from './components/List';
 import Filter from './components/Filter';
-import {Item} from './types/item';
+import { useDispatch } from 'react-redux';
+import { onFilterDataRequest, onLoadDataRequested } from './redux/actions/jobs.actions';
+import useTypedSelector from './redux/useTypedSelector';
 
 interface FilterContextInterface {
   filters: Array<string>;
@@ -12,8 +13,11 @@ interface FilterContextInterface {
 export const FilterContext = React.createContext<FilterContextInterface|null>(null);
 
 function App() {
+
+  
+  const dispatch = useDispatch()
   useEffect(() => {
-    console.log(data)
+    dispatch(onLoadDataRequested())
   }, [])
 
   const [filters, setFilters] = useState<string[]>([])
@@ -23,21 +27,13 @@ function App() {
     setFilters: setFilters,
   }
 
-  const [filteredData, setFilterData] = useState(data)
+  const jobs = useTypedSelector((state) => state.jobs.jobs);
+
   useEffect(() => {
-    setFilterData(data.filter(
-      function (item){
-        let r = true;
-        filters.map((filter) => 
-          r = r && ((item.role === filter) || (item.level === filter) || (item.languages.includes(filter)))
-        )
-        return r
-        
-      }
-    )
-    )
-  }, [filters])
+    dispatch(onFilterDataRequest({filters,jobs}))
+  }, [dispatch, filters, jobs])
   
+  const filteredData = useTypedSelector((state) => state.jobs.filteredJobs)
   return (
     <FilterContext.Provider value={filterContext}>
       <div className='bg-lightCyanBg min-h-screen flex flex-col items-center' style={{fontSize: "15px", fontFamily:"'League Spartan', sans-serif", fontWeight:"500"}}>

@@ -14,6 +14,10 @@ export interface Item{
     tools: Array<string>;
 }
 
-export interface ItemList{
-    items: Array<Item>;
+export type ItemList =  Array<Item>;
+
+export interface IJobsDefaultState{
+    jobs: ItemList | never[],
+    filteredJobs: ItemList | never[],
+    loading: boolean,
 }
