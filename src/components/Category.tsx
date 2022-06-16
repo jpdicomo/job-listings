@@ -12,9 +12,9 @@ const Category = (props:{category:string}) => {
         onMouseOver={() => setHover(true)} 
         onMouseLeave={() => setHover(false)}
         onClick={() => {
-          if(filterContext && !filterContext.filters.includes(category)){
+          if(filterContext && !filterContext.filters.categories.includes(category)){
 
-            filterContext.setFilters([...filterContext.filters,category])
+            filterContext.setFilters({...filterContext.filters, categories:[...filterContext.filters.categories,category]})
           }
          }
         }

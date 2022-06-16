@@ -16,7 +16,7 @@ const FilterItem = (props:{filter:string}) => {
                     onMouseLeave={() => setHover(false)}
                     onClick={() =>{
                         if(filterContext){
-                            filterContext.setFilters(filterContext.filters.filter(item => item !== filter))
+                            filterContext.setFilters({...filterContext.filters, categories:filterContext.filters.categories.filter(item => item !== filter)})
                         }
                     }}>
                     <img
